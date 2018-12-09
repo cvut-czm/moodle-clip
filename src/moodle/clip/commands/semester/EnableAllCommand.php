@@ -24,14 +24,14 @@ class EnableAllCommand extends Command {
         // TODO: Implement usage() method.
     }
 
-    public function execute(Console $console, ?Context $context, Params $params) : ?WaitForInput {
+    public function execute(Params $params) : ?WaitForInput {
         global $DB;
-        $console->printBuilder()->write('This will make all courses visible to all students. Are you sure? [yes/no]')->send();
+        $this->console()->printBuilder()->write('This will make all courses visible to all students. Are you sure? [yes/no]')->send();
         return new WaitForInput([$this,'confirm']);
     }
-    public function confirm(Console $console, SemesterContext $context, Params $params) : ?WaitForInput {
-        $semester=$context->getSemester();
-        $console->printBuilder()->writeln('Enabling all courses');
+    public function confirm(Params $params) : ?WaitForInput {
+        $semester=$this->context()->getSemester();
+        $this->console()->printBuilder()->writeln('Enabling all courses');
         $instances = $semester->get_course_instances();
         foreach ($instances as $instance) {
             $course = $DB->get_record('course', ['id' => $instance->course_id]);

@@ -50,9 +50,9 @@ class InfoCommand extends Command {
     /**
      * @param SemesterContext $context
      */
-    public function execute(Console $console, ?Context $context, Params $params) : ?WaitForInput {
-        $s = $context->getSemester();
-        $console->printBuilder()->writeln('Semester ' . $s->code)->send()
+    public function execute(Params $params) : ?WaitForInput {
+        $s = $this->context()->getSemester();
+        $this->console()->printBuilder()->writeln('Semester ' . $s->code)->send()
                 ->writeln($s->get_long_name())->send()
                 ->write($s->get_start_date()->print_standard_date())->write(' - ')->writeln($s->get_end_date()
                         ->print_standard_date())->send()

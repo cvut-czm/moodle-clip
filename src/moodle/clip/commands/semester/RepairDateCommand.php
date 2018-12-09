@@ -23,19 +23,19 @@ class RepairDateCommand extends Command {
         // TODO: Implement usage() method.
     }
 
-    public function execute(Console $console, ?Context $context, Params $params) : ?WaitForInput {
+    public function execute(Params $params) : ?WaitForInput {
         global $DB;
-        $console->printBuilder()->writeln('Repairing course start and end dates...')->send();
-        $instances = $context->getSemester()->get_course_instances();
+        $this->console()->printBuilder()->writeln('Repairing course start and end dates...')->send();
+        $instances = $this->context()->getSemester()->get_course_instances();
         foreach ($instances as $instance) {
             $course = $DB->get_record('course', ['id' => $instance->course_id]);
             if ($course !== false) {
-                $course->startdate = $context->getSemester()->start_date;
-                $course->enddate = $context->getSemester()->end_date;
+                $course->startdate = $this->context()->getSemester()->start_date;
+                $course->enddate = $this->context()->getSemester()->end_date;
                 $DB->update_record('course', $course);
             }
         }
-        $console->printBuilder()->writeln('Course start and end dates repaired.')->sendInputLine();
+        $this->console()->printBuilder()->writeln('Course start and end dates repaired.')->sendInputLine();
         return null;
     }
 }

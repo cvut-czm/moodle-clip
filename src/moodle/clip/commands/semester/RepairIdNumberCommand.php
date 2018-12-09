@@ -26,12 +26,12 @@ class RepairIdNumberCommand extends Command {
         // TODO: Implement usage() method.
     }
 
-    public function execute(Console $console, ?Context $context, Params $params) : ?WaitForInput {
+    public function execute(Params $params) : ?WaitForInput {
         global $DB;
 
         /** @var semester $semester */
-        $semester=$context->getSemester();
-        $console->printBuilder()->writeln('Repairing course idnumbers in semester '.$semester->code.'.')->send();
+        $semester=$this->context()->getSemester();
+        $this->console()->printBuilder()->writeln('Repairing course idnumbers in semester '.$semester->code.'.')->send();
 
         $instances = $semester->get_course_instances();
         foreach ($instances as $instance) {
@@ -48,7 +48,7 @@ class RepairIdNumberCommand extends Command {
                 $DB->update_record('course', $course);
             }
         }
-        $console->printBuilder()->writeln('Repaired.')->sendInputLine();
+        $this->console()->printBuilder()->writeln('Repaired.')->sendInputLine();
         return null;
     }
 }

@@ -48,7 +48,7 @@ class SemesterPreperation {
         foreach ($semester->get_course_instances() as $crs_in) {
             foreach ($crs_in->get_kos_courses() as $crs) {
                 if (isset($this->missing[$crs->code])) {
-                    $this->readyToLoad[$semester->code] =
+                    $this->readyToLoad[$semester->code][] =
                             ['url' => $crs_in->get_url(), 'code' => $crs->code, 'name' => $crs->get_name(),
                                     'id' => $crs_in->course_id];
                     unset($this->missing[$crs->code]);

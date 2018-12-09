@@ -49,7 +49,7 @@ class LoadCommand extends Command {
     /**
      * @param SemesterContext $context
      */
-    public function execute(Console $console, ?Context $context, Params $params): ?WaitForInput {
+    public function execute(Params $params): ?WaitForInput {
         // TODO: Implement execute() method.
     }
 }

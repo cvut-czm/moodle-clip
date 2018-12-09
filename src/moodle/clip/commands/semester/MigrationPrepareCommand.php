@@ -105,26 +105,25 @@ class MigrationPrepareCommand extends Command {
         $this->prep->groupCourses($last);
         $this->prep->groupCourses($lastyear);
         $this->out->deleteLastLine()
-                ->writeln('Semester ' . $last->code . ' courses: ' . count($this->prep->readyToLoad[$last->code]) . ' groupings:' .
-                        count($this->prep->groupings[$last->code]) . ' courses.')->send()
-                ->writeln('Semester ' . $lastyear->code . ' courses: ' . count($this->prep->readyToLoad[$lastyear->code]) .
-                        ' groupings:' .
-                        count($this->prep->groupings[$lastyear->code]) . ' courses.')->sendInputLine();
+                ->writeln('Semester ' . $last->code . ' courses: ' . count($this->prep->readyToLoad[$last->code]))->send()
+                ->writeln( 'Semester ' . $last->code .' groupings:' . count($this->prep->groupings[$last->code]))->send()
+                ->writeln('Semester ' . $lastyear->code . ' courses: ' . count($this->prep->readyToLoad[$lastyear->code]))->send()
+                ->writeln('Semester ' . $lastyear->code .' groupings:' . count($this->prep->groupings[$lastyear->code]))->sendInputLine();
         $this->context->cacheAdd('prep', $this->prep);
     }
 
     /**
      * @param SemesterContext $context
      */
-    public function execute(Console $console, ?Context $context, Params $params) : ?WaitForInput {
-        $out = $console->printBuilder();
-        $out->writeln('Preparing migration for semester ' . $context->getSemester()->code)->send();
+    public function execute(Params $params) : ?WaitForInput {
+        $out = $this->console()->printBuilder();
+        $out->writeln('Preparing migration for semester ' . $this->context()->getSemester()->code)->send();
         $out->writeln('Departments for migration: ' . join(',', instance::cache_course_from()))->send();
         $out->progressBar()->display(10, 'Loading courses already in semester', false);
 
-        $this->prep = new SemesterPreperation($context->getSemester());
-        $this->console = $console;
-        $this->context = $context;
+        $this->prep = new SemesterPreperation($this->context()->getSemester());
+        $this->context=$this->context();
+        $this->console=$this->console();
         $this->out = $out;
 
         $this->console->executeFuture([$this, 'loadExtra']);

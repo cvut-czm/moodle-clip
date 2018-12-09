@@ -23,7 +23,7 @@ class InitCommand extends Command {
         // TODO: Implement usage() method.
     }
 
-    public function execute(Console $console, ?Context $context, Params $params) : ?WaitForInput {
+    public function execute(Params $params) : ?WaitForInput {
 
     }
 }
